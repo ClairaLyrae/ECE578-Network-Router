@@ -8,11 +8,19 @@ public class Router {
 	protected float xpos = 0f;
 	protected float ypos = 0f;
 	protected float range = 0f;
+	protected int id = 0;
 	
-	public Router(float xpos, float ypos, float range) {
+	protected ForwardingTable forwardTable = new ForwardingTable();
+	
+	public Router(int id, float xpos, float ypos, float range) {
 		this.xpos = xpos;
 		this.ypos = ypos;
 		this.range = range;
+		this.id = id;
+	}
+	
+	public ForwardingTable getForwardingTable() {
+		return forwardTable;
 	}
 	
 	public void setPos(float x, float y) {

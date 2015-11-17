@@ -37,12 +37,14 @@ public class Network {
 		Network n = new Network();
 		Scanner in = new Scanner(new File(filename));
 		float x, y, r;
+		int id = 0;
 		while(in.hasNextLine()) {
 			String[] split = in.nextLine().split(",");
 			x = Float.parseFloat(split[0]);
 			y = Float.parseFloat(split[1]);
 			r = Float.parseFloat(split[2]);
-			n.addRouter(new Router(x, y, r));
+			n.addRouter(new Router(id, x, y, r));
+			id++;
 		}
 		in.close();
 		return n;

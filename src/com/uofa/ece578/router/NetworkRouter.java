@@ -62,7 +62,7 @@ public class NetworkRouter {
 					i--;
 					continue;
 				}
-				network.addRouter(new Router(x, y, r));
+				network.addRouter(new Router(i, x, y, r));
 			}
 			in.close();
 		} else {
