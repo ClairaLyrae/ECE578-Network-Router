@@ -36,8 +36,16 @@ public class Router {
 		return xpos;
 	}
 
+	public float getRange() {
+		return range;
+	}
+	
 	public float getYPos() {
-		return xpos;
+		return ypos;
+	}
+	
+	public int getID() {
+		return id;
 	}
 
 	/**

@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 /**
- * Main project class implementing the required functionality for the assignment sections. If program is run with the '-f' flag, the network will
+ * Main class composing the command line version of the network router program. See {@link com.uofa.ece578.NetworkRouter} for the
+ * application version of the program. If program is run with the '-f' flag, the network will
  * be read from a user specified file instead of through manual input. 
  */
 
@@ -62,7 +64,7 @@ public class NetworkRouter {
 					i--;
 					continue;
 				}
-				network.addRouter(new Router(i, x, y, r));
+				network.addRouter(i, x, y, r);
 			}
 			in.close();
 		} else {

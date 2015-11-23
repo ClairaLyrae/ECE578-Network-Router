@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ForwardingTable {
+	
 	private class Entry {
 		public float cost;
 		public int nextHop;
@@ -34,6 +35,10 @@ public class ForwardingTable {
 	
 	public void addEntry(int destination, int next, float cost) {
 		table.put(destination, new Entry(next, cost));
+	}
+	
+	public void removeEntry(int destination) {
+		table.remove(destination);
 	}
 
 	public String toString() {
