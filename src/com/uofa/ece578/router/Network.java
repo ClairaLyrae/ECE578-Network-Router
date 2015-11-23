@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Network of router objects
@@ -23,14 +25,36 @@ public class Network {
 	private List<Router> routers = new LinkedList<Router>();
 	private Set<NetworkListener> listeners = new HashSet<NetworkListener>();
 
-	public Network() {
-		
-	}
+	private Router source = null;
 
+	/**
+	 * @return Source router of network
+	 */
+	public Router getSource() {
+		return source;
+	}
+	
+	/**
+	 * Sets the selected source router in the network to the given router
+	 * @param r Source router
+	 */
+	public void setSource(Router r) {
+		source = r;
+		update();
+	}
+	
+	/**
+	 * Finds a router with the given natural ordering index 
+	 * @param index
+	 * @return Router at order given by index
+	 */
 	public Router getRouterByIndex(int index) {
 		return routers.get(index);
 	}
 	
+	/**
+	 * @return Next unused router ID in network
+	 */
 	public int getNextValidID() {
 		int i = 0;
 		while(hasRouterWithID(i))
@@ -42,6 +66,11 @@ public class Network {
 		return routers;
 	}
 	
+	/**
+	 * Finds a router in the network with the given id, if it exists
+	 * @param id Router id
+	 * @return Router with given id
+	 */
 	public Router getRouterByID(int id) {
 		for(Router r : routers) {
 			if(r.getID() == id)
@@ -50,11 +79,19 @@ public class Network {
 		return null;
 	}
 	
+	/**
+	 * Adds a new router defintiion to the network
+	 * @param id Router id
+	 * @param x X position of router
+	 * @param y Y position of router
+	 * @param range Range of router
+	 * @return True if router was added
+	 */
 	public boolean addRouter(int id, float x, float y, float range) {
 		if(getRouterByID(id) != null)
 			return false;
 		routers.add(new Router(id, x, y, range));
-		callEvent();
+		update();
 		return true;
 	}
 	
@@ -66,32 +103,52 @@ public class Network {
 		listeners.remove(listen);
 	}
 	
-	public void callEvent() {
+	/**
+	 * Updates all network listeners and network computational states
+	 */
+	public void update() {
+		for(Router r : routers)
+			r.calculateForwardingTable(this);
 		for(NetworkListener l : listeners) {
 			l.onEditNetwork();
 		}
 	}
 	
+	/**
+	 * Removes a router with the given id from the network
+	 * @param id ID of router to remove
+	 * @return True if router was removed
+	 */
 	public boolean removeRouter(int id) {
 		Router r = getRouterByID(id);
 		if(r == null)
 			return false;
 		routers.remove(r);
-		callEvent();
+		update();
 		return true;
 	}
 	
+	/**
+	 * @param id ID of router to find
+	 * @return True if network has router with given id
+	 */
 	public boolean hasRouterWithID(int id) {
 		return getRouterByID(id) != null;
 	}
 	
+	/**
+	 * @return Number of routers in network
+	 */
 	public int size() { 
 		return routers.size();
 	}
 	
+	/**
+	 * Removes all routers in the network
+	 */
 	public void clear() {
 		routers.clear();
-		callEvent();
+		update();
 	}
 
 	/**
@@ -208,5 +265,16 @@ public class Network {
 				val = r.getYPos();
 		}
 		return val;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder("network[");
+		for(Router r : routers) {
+			str.append(r.toString());
+			str.append(',');
+		}
+		str.append("]");
+		return str.toString();
 	}
 }

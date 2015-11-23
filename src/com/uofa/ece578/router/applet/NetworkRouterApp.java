@@ -25,6 +25,8 @@ import java.awt.Canvas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  * Main class composing the application version of the network router program with a graphical UI. See {@link com.uofa.ece578.NetworkRouter} for the
@@ -33,6 +35,7 @@ import java.io.File;
 
 public class NetworkRouterApp {
 
+	private static NetworkRouterApp handle;
 	private Network network = new Network();
 	
 	private JFrame frame_EceNetworkRouter;
@@ -47,10 +50,14 @@ public class NetworkRouterApp {
 	private final JMenuItem menuBtnExit = new JMenuItem("Exit");
 	private final JCheckBoxMenuItem menuBtnGrid = new JCheckBoxMenuItem("Show Grid");
 	private final JCheckBoxMenuItem menuBtnRange = new JCheckBoxMenuItem("Show Ranges");
-	private final JCheckBoxMenuItem menuBtnTree = new JCheckBoxMenuItem("Show Tree");
+	private final JCheckBoxMenuItem menuBtnRouting = new JCheckBoxMenuItem("Show Routing Tree");
+	private final JCheckBoxMenuItem menuBtnSpanning = new JCheckBoxMenuItem("Show Spannng Tree");
+	private final JCheckBoxMenuItem menuBtnConnect = new JCheckBoxMenuItem("Show Connectivity");
 	
 	private JNetworkGraph networkGraph;
 	private JRouterTable routerTable;
+	private JForwardingTable forwardTable;
+	private final JTabbedPane tabPane = new JTabbedPane();
 	private final JSplitPane splitPane = new JSplitPane();
 
 	public static void main(String[] args) {
@@ -76,15 +83,17 @@ public class NetworkRouterApp {
 		});
 	}
 
-	private static NetworkRouterApp handle;
-	
 	public NetworkRouterApp() {
 		initialize();
 	}
 
+	/**
+	 * Setup application GUI
+	 */
 	private void initialize() {
-		routerTable = new JRouterTable(network);
 		networkGraph = new JNetworkGraph(network);
+		routerTable = new JRouterTable(network);
+		forwardTable = new JForwardingTable(network);
 		
 		frame_EceNetworkRouter = new JFrame();
 		frame_EceNetworkRouter.setTitle("ECE578 Network Router");
@@ -103,7 +112,9 @@ public class NetworkRouterApp {
 		menuFile.add(menuBtnExit);
 		menuNetwork.add(menuBtnGrid);
 		menuNetwork.add(menuBtnRange);
-		menuNetwork.add(menuBtnTree);
+		menuNetwork.add(menuBtnConnect);
+		menuNetwork.add(menuBtnRouting);
+		menuNetwork.add(menuBtnSpanning);
 		
 		menuBtnNew.addActionListener(new ActionListener() {
 			@Override
@@ -164,19 +175,36 @@ public class NetworkRouterApp {
 				networkGraph.displayRange(menuBtnRange.isSelected());
 			}
 		});
-		menuBtnTree.addActionListener(new ActionListener() {
+		menuBtnConnect.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.displaySpanningTree(menuBtnTree.isSelected());
+				networkGraph.displayConnectivity(menuBtnConnect.isSelected());
+			}
+		});
+		menuBtnRouting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				networkGraph.displayRoutingTree(menuBtnRouting.isSelected());
+			}
+		});
+		menuBtnSpanning.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				networkGraph.displaySpanningTree(menuBtnSpanning.isSelected());
 			}
 		});
 		
 		splitPane.setResizeWeight(0.25);
 		frame_EceNetworkRouter.getContentPane().add(splitPane, BorderLayout.CENTER);
-		splitPane.setLeftComponent(routerTable);
+		splitPane.setLeftComponent(tabPane);
 		splitPane.setRightComponent(networkGraph);		
-		
-		network.addListener(routerTable);
 		network.addListener(networkGraph);
+		network.addListener(routerTable);
+		network.addListener(forwardTable);
+		tabPane.add(routerTable);
+		tabPane.setTitleAt(0, "Router List");
+		tabPane.add(forwardTable);
+		tabPane.setTitleAt(1, "Forwarding Table");
+		
 	}
 }

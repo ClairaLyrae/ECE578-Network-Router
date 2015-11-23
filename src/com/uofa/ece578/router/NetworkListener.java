@@ -11,5 +11,4 @@ public interface NetworkListener {
 	 * Called whenever the network is edited in some manner
 	 */
 	public void onEditNetwork();
-	
 }

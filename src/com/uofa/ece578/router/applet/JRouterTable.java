@@ -3,6 +3,8 @@ package com.uofa.ece578.router.applet;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import java.awt.BorderLayout;
@@ -17,8 +19,13 @@ import com.uofa.ece578.router.Router;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class JRouterTable extends JPanel implements NetworkListener {
+/**
+ * GUI class for displaying the list of routers within a network and allowing editing
+ */
 
+public class JRouterTable extends JPanel implements NetworkListener {
+	private static final long serialVersionUID = 5300777203503602936L;
+	
 	private JScrollPane scrollPane;
 	private final JTable table = new JTable();
 	private RouterTable routerTable;
@@ -41,6 +48,12 @@ public class JRouterTable extends JPanel implements NetworkListener {
 			public void actionPerformed(ActionEvent arg0) {
 				network.addRouter(network.getNextValidID(), 0f, 0f, 20f);
 				((AbstractTableModel)table.getModel()).fireTableDataChanged();
+			}
+		});
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				network.setSource(routerTable.getRouterAt(e.getFirstIndex()));
 			}
 		});
 		add(button_AddRouter_1, BorderLayout.SOUTH);
@@ -66,6 +79,10 @@ public class JRouterTable extends JPanel implements NetworkListener {
 
 	        public String getColumnName(int col) {
 	          return columnNames[col];
+	        }
+	        
+	        public Router getRouterAt(int row) {
+	        	return network.getRouterByIndex(row);
 	        }
 
 	        public Object getValueAt(int row, int col) {
@@ -111,7 +128,7 @@ public class JRouterTable extends JPanel implements NetworkListener {
 	        		break;
 	        	}
 				fireTableCellUpdated(row, col);
-				network.callEvent();
+				network.update();
 	        }
 	}
 
