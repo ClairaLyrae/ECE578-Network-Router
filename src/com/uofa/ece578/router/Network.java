@@ -147,6 +147,7 @@ public class Network {
 	 * Removes all routers in the network
 	 */
 	public void clear() {
+		source = null;
 		routers.clear();
 		update();
 	}

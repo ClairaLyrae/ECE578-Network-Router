@@ -2,6 +2,7 @@ package com.uofa.ece578.router.applet;
 
 import java.awt.EventQueue;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -25,8 +26,12 @@ import java.awt.Canvas;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.ImageIcon;
+import java.awt.Toolkit;
 
 /**
  * Main class composing the application version of the network router program with a graphical UI. See {@link com.uofa.ece578.NetworkRouter} for the
@@ -44,6 +49,7 @@ public class NetworkRouterApp {
 	private final JMenu menuFile = new JMenu("File");
 	private final JMenu menuNetwork = new JMenu("Network");
 	private final JSeparator menuSeparator = new JSeparator();
+	private final JSeparator menuSeparator2 = new JSeparator();
 	private final JMenuItem menuBtnOpen = new JMenuItem("Open File...");
 	private final JMenuItem menuBtnSave = new JMenuItem("Save");
 	private final JMenuItem menuBtnNew = new JMenuItem("New");
@@ -51,7 +57,7 @@ public class NetworkRouterApp {
 	private final JCheckBoxMenuItem menuBtnGrid = new JCheckBoxMenuItem("Show Grid");
 	private final JCheckBoxMenuItem menuBtnRange = new JCheckBoxMenuItem("Show Ranges");
 	private final JCheckBoxMenuItem menuBtnRouting = new JCheckBoxMenuItem("Show Routing Tree");
-	private final JCheckBoxMenuItem menuBtnSpanning = new JCheckBoxMenuItem("Show Spannng Tree");
+	private final JCheckBoxMenuItem menuBtnSpanning = new JCheckBoxMenuItem("Show Spanning Tree");
 	private final JCheckBoxMenuItem menuBtnConnect = new JCheckBoxMenuItem("Show Connectivity");
 	
 	private JNetworkGraph networkGraph;
@@ -59,6 +65,10 @@ public class NetworkRouterApp {
 	private JForwardingTable forwardTable;
 	private final JTabbedPane tabPane = new JTabbedPane();
 	private final JSplitPane splitPane = new JSplitPane();
+	private final JRadioButtonMenuItem menuRadioGrid1 = new JRadioButtonMenuItem("Grid Spacing (1)");
+	private final JRadioButtonMenuItem menuRadioGrid5 = new JRadioButtonMenuItem("Grid Spacing (5)");
+	private final JRadioButtonMenuItem menuRadioGrid10 = new JRadioButtonMenuItem("Grid Spacing (10)");
+	private final ButtonGroup menuRadioGridGroup = new ButtonGroup();
 
 	public static void main(String[] args) {
 		
@@ -96,6 +106,7 @@ public class NetworkRouterApp {
 		forwardTable = new JForwardingTable(network);
 		
 		frame_EceNetworkRouter = new JFrame();
+		frame_EceNetworkRouter.setIconImage(Toolkit.getDefaultToolkit().getImage(NetworkRouterApp.class.getResource("/rss.png")));
 		frame_EceNetworkRouter.setTitle("ECE578 Network Router");
 		frame_EceNetworkRouter.setResizable(false);
 		frame_EceNetworkRouter.setBounds(100, 100, 700, 526);
@@ -104,9 +115,12 @@ public class NetworkRouterApp {
 		frame_EceNetworkRouter.setJMenuBar(menu);
 		menu.add(menuFile);
 		menu.add(menuNetwork);
+		menuBtnNew.setIcon(new ImageIcon(NetworkRouterApp.class.getResource("/file.png")));
 		menuFile.add(menuBtnNew);
+		menuBtnOpen.setIcon(new ImageIcon(NetworkRouterApp.class.getResource("/folder_files.png")));
 		menuFile.add(menuBtnOpen);
 		menuFile.add(menuSeparator);
+		menuBtnSave.setIcon(new ImageIcon(NetworkRouterApp.class.getResource("/save.png")));
 		menuFile.add(menuBtnSave);
 		menuFile.add(menuSeparator);
 		menuFile.add(menuBtnExit);
@@ -115,7 +129,36 @@ public class NetworkRouterApp {
 		menuNetwork.add(menuBtnConnect);
 		menuNetwork.add(menuBtnRouting);
 		menuNetwork.add(menuBtnSpanning);
+		menuNetwork.add(menuSeparator2);
+		menuNetwork.add(menuRadioGrid1);
+		menuNetwork.add(menuRadioGrid5);
+		menuNetwork.add(menuRadioGrid10);
 		
+		menuRadioGridGroup.add(menuRadioGrid1);
+		menuRadioGridGroup.add(menuRadioGrid5);
+		menuRadioGridGroup.add(menuRadioGrid10);
+		menuRadioGrid5.setSelected(true);
+		
+		menuBtnGrid.setSelected(true);
+		
+		menuRadioGrid1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				networkGraph.setGridSize(1f);
+			}
+		});
+		menuRadioGrid5.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				networkGraph.setGridSize(5f);
+			}
+		});
+		menuRadioGrid10.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				networkGraph.setGridSize(10f);
+			}
+		});
 		menuBtnNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

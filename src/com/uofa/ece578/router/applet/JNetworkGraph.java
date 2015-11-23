@@ -42,6 +42,11 @@ public class JNetworkGraph extends JPanel implements NetworkListener {
 		repaint();
 	}
 
+	public void setGridSize(float f) {
+		gridlines = f;
+		repaint();
+	}
+	
 	public void displayGrid(boolean enable) {
 		drawGrid = enable;
 		repaint();
@@ -156,24 +161,26 @@ public class JNetworkGraph extends JPanel implements NetworkListener {
 
 				// Draw links
 				if(drawRoutingTree) {
-					g.setStroke(strokeBold);
-					g.setColor(Color.GREEN);
 					Router src = network.getSource();
-					for(Router r : network.getRouters()) {
-						if(r != src) {
-							Router prev = src;
-							while(prev.getForwardingTable().hasEntry(r.getID())) {
-								Router next = network.getRouterByID(prev.getForwardingTable().getNextHop(r.getID()));
-								int xloc1 = (int)((prev.getXPos()-offsetx)*scalex);
-								int yloc1 = (int)((prev.getYPos()-offsety)*scaley);
-								int xloc2 = (int)((next.getXPos()-offsetx)*scalex);
-								int yloc2 = (int)((next.getYPos()-offsety)*scaley);
-								g.drawLine(pad + xloc1, height - pad - yloc1, pad + xloc2, height - pad - yloc2);
-								prev = next;
+					if(src != null) {
+						g.setStroke(strokeBold);
+						g.setColor(Color.GREEN);
+						for(Router r : network.getRouters()) {
+							if(r != src) {
+								Router prev = src;
+								while(prev.getForwardingTable().hasEntry(r.getID())) {
+									Router next = network.getRouterByID(prev.getForwardingTable().getNextHop(r.getID()));
+									int xloc1 = (int)((prev.getXPos()-offsetx)*scalex);
+									int yloc1 = (int)((prev.getYPos()-offsety)*scaley);
+									int xloc2 = (int)((next.getXPos()-offsetx)*scalex);
+									int yloc2 = (int)((next.getYPos()-offsety)*scaley);
+									g.drawLine(pad + xloc1, height - pad - yloc1, pad + xloc2, height - pad - yloc2);
+									prev = next;
+								}
 							}
 						}
+						g.setStroke(strokeSolid);						
 					}
-					g.setStroke(strokeSolid);
 				}
 
 				// Draw Routers
