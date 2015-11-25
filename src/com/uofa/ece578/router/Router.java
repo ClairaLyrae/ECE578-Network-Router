@@ -96,6 +96,9 @@ public class Router {
 		
 	}
 
+	
+	
+	
 	private float getShortestDistance(Router destination, Map<Router, Float> distanceTo) {
 		Float d = distanceTo.get(destination);
 		if (d == null) {
@@ -105,6 +108,7 @@ public class Router {
 		}
 	}
 	
+
 	public void setPos(float x, float y) {
 		xpos = x;
 		ypos = y;
