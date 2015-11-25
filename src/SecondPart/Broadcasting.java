@@ -119,7 +119,7 @@ public String showTotalBraodcastTransmissionPower(){
 		String result="";
 		double totalCost=0;
 		int totalTransmits=0;
-		result += "Source Router of Tree is Router ID : "+sourceRouter.getrouterNumber()+"\n";
+		result += "Source Router ID : "+sourceRouter.getrouterNumber()+"\n";
 		result+="Source of Transmission \tSent To\t\tEnergy-Cost to Transmit\n";
 		initializeAllRouters_toUnvisited();
 		
@@ -153,7 +153,7 @@ public String showTotalBraodcastTransmissionPower(){
 		}
 		
 		result+= "\nTotal Transmissions: "+totalTransmits+
-				"\nTotal Energy Cost of Transmissions: "+
+				"\nTotal Energy Transmissions Cost: "+
 				String.format("%,10.3f", totalCost)+"\n";
 		
 		return result;
