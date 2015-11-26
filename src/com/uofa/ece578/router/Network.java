@@ -163,7 +163,7 @@ public class Network {
 		Network n = new Network();
 		Scanner in = new Scanner(new File(filename));
 		float x, y, r;
-		int id = 0;
+		int id = 1;
 		while(in.hasNextLine()) {
 			String[] split = in.nextLine().split(",");
 			x = Float.parseFloat(split[0]);
@@ -187,7 +187,7 @@ public class Network {
 		clear();
 		Scanner in = new Scanner(new File(filename));
 		float x, y, r;
-		int id = 0;
+		int id = 1;
 		while(in.hasNextLine()) {
 			String[] split = in.nextLine().split(",");
 			x = Float.parseFloat(split[0]);

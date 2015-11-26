@@ -49,8 +49,7 @@ public class Broadcasting {
 		{
 			nxtFndRouter_edge= foundNextShortEdgeDistance();
 			
-			if(false && nxtFndRouter_edge!=null)
-			{
+			if(false && nxtFndRouter_edge!=null) {
 				System.out.println(nxtFndRouter_edge.printRouterInfo());
 			}
 		}
@@ -119,7 +118,7 @@ public String showTotalBraodcastTransmissionPower(){
 		String result="";
 		double totalCost=0;
 		int totalTransmits=0;
-		result += "Source Router ID : "+sourceRouter.getrouterNumber()+"\n";
+		result += "Source Router of Tree is Router ID : "+sourceRouter.getrouterNumber()+"\n";
 		result+="Source of Transmission \tSent To\t\tEnergy-Cost to Transmit\n";
 		initializeAllRouters_toUnvisited();
 		
@@ -153,7 +152,7 @@ public String showTotalBraodcastTransmissionPower(){
 		}
 		
 		result+= "\nTotal Transmissions: "+totalTransmits+
-				"\nTotal Energy Transmissions Cost: "+
+				"\nTotal Energy Cost of Transmissions: "+
 				String.format("%,10.3f", totalCost)+"\n";
 		
 		return result;

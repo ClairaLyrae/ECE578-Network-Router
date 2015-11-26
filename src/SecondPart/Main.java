@@ -34,7 +34,7 @@ public class Main {
 			
 			for(int index=0 ; index<network_broadcast.size();index++)
 			{
-				network_broadcast.get(index).setrouterNumber(index+1);
+				network_broadcast.get(index).setrouterNumber(index);
 			}
 			
 			for (Router n : network_broadcast){

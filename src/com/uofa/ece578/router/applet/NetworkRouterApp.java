@@ -38,10 +38,11 @@ import java.awt.Toolkit;
  * command line version of the program.
  */
 
-public class NetworkRouterApp {
+public class NetworkRouterApp implements ActionListener{
 
 	private static NetworkRouterApp handle;
 	private Network network = new Network();
+	private File currentFile = null;
 	
 	private JFrame frame_EceNetworkRouter;
 
@@ -52,12 +53,13 @@ public class NetworkRouterApp {
 	private final JSeparator menuSeparator2 = new JSeparator();
 	private final JMenuItem menuBtnOpen = new JMenuItem("Open File...");
 	private final JMenuItem menuBtnSave = new JMenuItem("Save");
+	private final JMenuItem menuBtnSaveAs = new JMenuItem("Save As");
 	private final JMenuItem menuBtnNew = new JMenuItem("New");
 	private final JMenuItem menuBtnExit = new JMenuItem("Exit");
 	private final JCheckBoxMenuItem menuBtnGrid = new JCheckBoxMenuItem("Show Grid");
 	private final JCheckBoxMenuItem menuBtnRange = new JCheckBoxMenuItem("Show Ranges");
 	private final JCheckBoxMenuItem menuBtnRouting = new JCheckBoxMenuItem("Show Routing Tree");
-	private final JCheckBoxMenuItem menuBtnSpanning = new JCheckBoxMenuItem("Show Spanning Tree");
+	private final JCheckBoxMenuItem menuBtnBroadcast = new JCheckBoxMenuItem("Show Broadcast Tree");
 	private final JCheckBoxMenuItem menuBtnConnect = new JCheckBoxMenuItem("Show Connectivity");
 	
 	private JNetworkGraph networkGraph;
@@ -122,13 +124,15 @@ public class NetworkRouterApp {
 		menuFile.add(menuSeparator);
 		menuBtnSave.setIcon(new ImageIcon(NetworkRouterApp.class.getResource("/save.png")));
 		menuFile.add(menuBtnSave);
+		menuBtnSaveAs.setIcon(new ImageIcon(NetworkRouterApp.class.getResource("/save.png")));
+		menuFile.add(menuBtnSaveAs);
 		menuFile.add(menuSeparator);
 		menuFile.add(menuBtnExit);
 		menuNetwork.add(menuBtnGrid);
 		menuNetwork.add(menuBtnRange);
 		menuNetwork.add(menuBtnConnect);
 		menuNetwork.add(menuBtnRouting);
-		menuNetwork.add(menuBtnSpanning);
+		menuNetwork.add(menuBtnBroadcast);
 		menuNetwork.add(menuSeparator2);
 		menuNetwork.add(menuRadioGrid1);
 		menuNetwork.add(menuRadioGrid5);
@@ -141,101 +145,19 @@ public class NetworkRouterApp {
 		
 		menuBtnGrid.setSelected(true);
 		
-		menuRadioGrid1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.setGridSize(1f);
-			}
-		});
-		menuRadioGrid5.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.setGridSize(5f);
-			}
-		});
-		menuRadioGrid10.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.setGridSize(10f);
-			}
-		});
-		menuBtnNew.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				network.clear();
-			}
-		});
-		menuBtnOpen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
-				fc.setCurrentDirectory(new File("."));
-			    int returnVal = fc.showOpenDialog(handle.frame_EceNetworkRouter);
-			        if (returnVal == JFileChooser.APPROVE_OPTION) {
-			            File file = fc.getSelectedFile();
-			            try {
-			            	network.clear();
-							network.appendFromFile(file.getAbsolutePath());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-			        } else {
-			        }
-			}
-		});
-		menuBtnSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fc = new JFileChooser();
-				fc.setCurrentDirectory(new File("."));
-			    int returnVal = fc.showSaveDialog(handle.frame_EceNetworkRouter);
-			        if (returnVal == JFileChooser.APPROVE_OPTION) {
-			            File file = fc.getSelectedFile();
-			            try {
-							network.saveToFile(file.getAbsolutePath());
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-			        } else {
-			        }
-			}
-		});
-		menuBtnExit.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				handle.frame_EceNetworkRouter.dispose();
-			}
-		});
-		menuBtnGrid.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.displayGrid(menuBtnGrid.isSelected());
-			}
-		});
-		menuBtnRange.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.displayRange(menuBtnRange.isSelected());
-			}
-		});
-		menuBtnConnect.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.displayConnectivity(menuBtnConnect.isSelected());
-			}
-		});
-		menuBtnRouting.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.displayRoutingTree(menuBtnRouting.isSelected());
-			}
-		});
-		menuBtnSpanning.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				networkGraph.displaySpanningTree(menuBtnSpanning.isSelected());
-			}
-		});
+		menuRadioGrid1.addActionListener(this);
+		menuRadioGrid5.addActionListener(this);
+		menuRadioGrid10.addActionListener(this);
+		menuBtnNew.addActionListener(this);
+		menuBtnOpen.addActionListener(this);
+		menuBtnSave.addActionListener(this);
+		menuBtnSaveAs.addActionListener(this);
+		menuBtnExit.addActionListener(this);
+		menuBtnGrid.addActionListener(this);
+		menuBtnRange.addActionListener(this);
+		menuBtnConnect.addActionListener(this);
+		menuBtnRouting.addActionListener(this);
+		menuBtnBroadcast.addActionListener(this);
 		
 		splitPane.setResizeWeight(0.25);
 		frame_EceNetworkRouter.getContentPane().add(splitPane, BorderLayout.CENTER);
@@ -248,6 +170,88 @@ public class NetworkRouterApp {
 		tabPane.setTitleAt(0, "Router List");
 		tabPane.add(forwardTable);
 		tabPane.setTitleAt(1, "Forwarding Table");
+	}
+	
+	private void saveAs() {
+		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("."));
+	    int returnVal = fc.showSaveDialog(handle.frame_EceNetworkRouter);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+				network.saveToFile(file.getAbsolutePath());
+				currentFile = file;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }
+	}
+	
+	private void save(File f) {
+		if(f == null) {
+			saveAs();
+		} else {
+	        try {
+	        	network.saveToFile(currentFile.getAbsolutePath());
+	        } catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void open() {
+		JFileChooser fc = new JFileChooser();
+		fc.setCurrentDirectory(new File("."));
+	    int returnVal = fc.showOpenDialog(handle.frame_EceNetworkRouter);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+            	network.clear();
+				network.appendFromFile(file.getAbsolutePath());
+				currentFile = file;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        } 
+	}
+	
+	private void newFile() {
+		network.clear();
+		currentFile = null;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object o = e.getSource();
 		
+		if(o == menuRadioGrid1) {
+			networkGraph.setGridSize(1f);
+		} else if (o ==	menuRadioGrid5) {
+			networkGraph.setGridSize(5f);
+		} else if (o ==	menuRadioGrid10) {
+			networkGraph.setGridSize(5f);
+		} else if (o ==	menuBtnNew) {
+			newFile();
+		} else if (o ==	menuBtnOpen) {
+			open();
+		} else if (o ==	menuBtnSave) {
+			save(currentFile);
+		} else if (o ==	menuBtnSaveAs) {
+			saveAs();
+		} else if (o ==	menuBtnExit) {
+			handle.frame_EceNetworkRouter.dispose();
+		} else if (o ==	menuBtnGrid) {
+			networkGraph.displayGrid(menuBtnGrid.isSelected());
+		} else if (o ==	menuBtnRange) {
+			networkGraph.displayRange(menuBtnRange.isSelected());
+		} else if (o ==	menuBtnRange) {
+			networkGraph.displayRange(menuBtnRange.isSelected());
+		} else if (o ==	menuBtnConnect) {
+			networkGraph.displayConnectivity(menuBtnConnect.isSelected());
+		} else if (o ==	menuBtnRouting) {
+			networkGraph.displayRoutingTree(menuBtnRouting.isSelected());
+		} else if (o ==	menuBtnBroadcast) {
+			networkGraph.displayBroadcastTree(menuBtnBroadcast.isSelected());
+		}
 	}
 }

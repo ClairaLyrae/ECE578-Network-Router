@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -29,7 +30,7 @@ public class JNetworkGraph extends JPanel implements NetworkListener {
 	private boolean drawRange = false;
 	private boolean drawGrid = true;
 	private boolean drawRoutingTree = false;
-	private boolean drawSpanningTree = false;
+	private boolean drawBroadcastTree = false;
 	private boolean drawConnectivity = false;
 	
 	private float[] dash = {5f};
@@ -57,8 +58,8 @@ public class JNetworkGraph extends JPanel implements NetworkListener {
 		repaint();
 	}
 
-	public void displaySpanningTree(boolean enable) {
-		drawSpanningTree = enable;
+	public void displayBroadcastTree(boolean enable) {
+		drawBroadcastTree = enable;
 		repaint();
 	}
 
@@ -80,9 +81,9 @@ public class JNetworkGraph extends JPanel implements NetworkListener {
 		@Override
 		public void paintComponent(Graphics g1) {
 			Graphics2D g = (Graphics2D)g1;
+		    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		    	    RenderingHints.VALUE_ANTIALIAS_ON);
 			super.paintComponent(g);
-			
-			
 			
 			int width = this.getWidth();
 			int height = this.getHeight();
@@ -144,7 +145,7 @@ public class JNetworkGraph extends JPanel implements NetworkListener {
 				// Draw links
 				if(drawConnectivity) {
 					g.setStroke(strokeDash);
-					g.setColor(Color.GREEN);
+					g.setColor(new Color(128, 128, 128, 128));
 					for(Router r : network.getRouters()) {
 						for(Router d : network.getRouters()) {
 							int xloc1 = (int)((r.getXPos()-offsetx)*scalex);
