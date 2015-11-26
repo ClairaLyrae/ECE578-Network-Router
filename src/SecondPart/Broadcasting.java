@@ -153,7 +153,7 @@ public String showTotalBraodcastTransmissionPower(){
 		}
 		
 		result+= "\nTotal Transmissions: "+totalTransmits+
-				"\nTotal Energy Transmissions Cost: "+
+				"\nEnergy Cost For Transmissions: "+
 				String.format("%,10.3f", totalCost)+"\n";
 		
 		return result;
@@ -200,7 +200,7 @@ private ArrayList<Router> getChildrenToParentInTree(Router currRouter){
 }
 	
 	
-public String printPowerTransCost_TransIndividualMessage_toEveryRouter(){
+public String ShowPowerTransCost_TransIndividualMessage_toEveryRouter(){
 		String result="";
 		double totalCost=0;
 		int totalTransmits=0;
