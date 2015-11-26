@@ -24,9 +24,9 @@ public class GraphingNetwork extends JFrame{
 	private int _part;
 	private int _sourceNumber;
 	
-	static final int _MARGIN = 60;
-	static final int _WIDTH = 1000;
-	static final int _HEIGHT = 900;
+	static final int _MARGIN = 50;
+	static final int _WIDTH = 900;
+	static final int _HEIGHT = 1000;
 
 public GraphingNetwork(ArrayList<Router> network, int sourceNumber, int part){
 	super("Connectivity Graph");

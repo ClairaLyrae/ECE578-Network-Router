@@ -120,7 +120,7 @@ public String showTotalBraodcastTransmissionPower(){
 		double totalCost=0;
 		int totalTransmits=0;
 		result += "Source Router ID : "+sourceRouter.getrouterNumber()+"\n";
-		result+="Source of Transmission \tSent To\t\tEnergy-Cost to Transmit\n";
+		result+="Source of Transmission \tSent To\t\tTransmission Energy-Cost \n";
 		initializeAllRouters_toUnvisited();
 		
 		sourceRouter.setstatus(Router.alreadyVisited);
@@ -141,10 +141,10 @@ public String showTotalBraodcastTransmissionPower(){
 						result+="Router ID : "+n.getrouterNumber()+
 								"\t\tRouters:";
 						for(Router listRouter: tempChildren){ 
-						result+="-"+listRouter.getrouterNumber();
+						result+="*"+listRouter.getrouterNumber();
 						}
-						result+="-\t\t  "+
-						String.format("%,10.2f", temp)+" Units\n";
+						result+="*\t\t  "+
+						String.format("%,10.3f", temp)+" Units\n";
 					}
 					n.setstatus(Router.doneVisited);
 					finished = false;
