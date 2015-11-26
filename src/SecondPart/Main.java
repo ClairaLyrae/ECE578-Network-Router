@@ -44,21 +44,21 @@ public class Main {
 			
 			
 			
-			System.out.println("\nBroadcast Routing\n");
+			System.out.println("\nBroadcast Routing Spanning Tree Using Prim's Algorithm\n");
 			
 			
 			Broadcasting broadcastRouting= new Broadcasting(network_broadcast.get(0), network_broadcast);
 			broadcastRouting.prims_Algorithm();
+			//System.out.println(broadcastRouting.printPowerTransMissionCost_TransmitSingleMessage_toEveryNode());
 			System.out.println(broadcastRouting.showTotalBraodcastTransmissionPower());
-			//We can graph it
+			System.out.println("\nEnergy required without Broadcast advantage and only Unicast");
+			System.out.println(broadcastRouting.ShowPowerTransCost_TransIndividualMessage_toEveryRouter());
 			
-			/*
 			try{
-				Graphing g = new Graphing(network_broadcast);
+				GraphingNetwork g = new GraphingNetwork(network_broadcast, 1, 2);
 			}catch(Exception e){}
-			*/
+			
 			return;
 		}
 
-
-}
+	}
