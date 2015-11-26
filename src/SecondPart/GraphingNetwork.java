@@ -14,19 +14,22 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-
-
-
 public class GraphingNetwork extends JFrame{
 	private ArrayList<Router> _network;
 	private double _Xmin, _Ymin, _Xmax, _Ymax;
 	private double _rangeX, _rangeY;
 	private int _part;
 	private int _sourceNumber;
+<<<<<<< Updated upstream
 	
 	static final int _MARGIN = 50;
 	static final int _WIDTH = 900;
 	static final int _HEIGHT = 1000;
+=======
+	static final int _MARGIN = 60;
+	static final int _WIDTH = 700;
+	static final int _HEIGHT = 600;
+>>>>>>> Stashed changes
 
 public GraphingNetwork(ArrayList<Router> network, int sourceNumber, int part){
 	super("Connectivity Graph");

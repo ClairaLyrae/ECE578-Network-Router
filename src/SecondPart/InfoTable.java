@@ -14,7 +14,6 @@ public class InfoTable {
 		cost = -1;
 		nextHopId = -1;
 		
-		
 	}
 	
 	public InfoTable(Router dest , double Rcost , int nxtHop)
@@ -33,7 +32,7 @@ public class InfoTable {
 		String result ="";
 		
 		if(destRouter ==null){
-			return "No Destination Router";
+			return "There is No Destination Router";
 		}
 		
 		result  = destRouter.getrouterNumber()+"\t\t"+String.format("%,10.3f", cost)+"\t"+nextHopId;

@@ -71,11 +71,11 @@ public class Router {
 		this.commonRange = commonRange;
 	}
 
-	public double get_linkcost() {
+	public double getlinkcost() {
 		return status;
 	}
 
-	public void set_linkcost(double distance) {
+	public void setlinkcost(double distance) {
 		this.cost = distance;
 	}
 

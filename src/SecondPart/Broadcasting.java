@@ -21,9 +21,9 @@ public class Broadcasting {
 		unreachableRouters = new ArrayList<Router>();
 	}
 	
-	public Broadcasting(Router src , ArrayList<Router> nodeList)
+	public Broadcasting(Router src , ArrayList<Router> routerList)
 	{
-		totalRouters = nodeList;
+		totalRouters = routerList;
 		forwardingTable = new ForwardingTable();
 		sourceRouter = src;
 		unreachableRouters = new ArrayList<Router>();
@@ -36,7 +36,7 @@ public class Broadcasting {
 	{
 
 		
-		sourceRouter.set_linkcost(0);
+		sourceRouter.setlinkcost(0);
 		sourceRouter.setstatus(Router.alreadyVisited);
 		 Router nxtFndRouter_edge= foundNextShortEdgeDistance();
 		
@@ -49,8 +49,12 @@ public class Broadcasting {
 		{
 			nxtFndRouter_edge= foundNextShortEdgeDistance();
 			
+<<<<<<< Updated upstream
 			if(false && nxtFndRouter_edge!=null)
 			{
+=======
+			if(check && nxtFndRouter_edge!=null) {
+>>>>>>> Stashed changes
 				System.out.println(nxtFndRouter_edge.printRouterInfo());
 			}
 		}
@@ -104,7 +108,7 @@ public Router foundNextShortEdgeDistance(){
 		}
 		
 		nextRouter_AddTree.setprevRouter(nextRouter_AddTree_Parent);
-		nextRouter_AddTree.set_linkcost(Calculations.getRoutersDistance(nextRouter_AddTree_Parent, nextRouter_AddTree));
+		nextRouter_AddTree.setlinkcost(Calculations.getRoutersDistance(nextRouter_AddTree_Parent, nextRouter_AddTree));
 		nextRouter_AddTree.setstatus(Router.alreadyVisited);
 		
 		return nextRouter_AddTree;
@@ -130,11 +134,10 @@ public String showTotalBraodcastTransmissionPower(){
 			finished = true;
 			for(Router n: totalRouters){
 				if(n.getstatus()==Router.alreadyVisited){
-					//transmission to children
+					
 					double temp = transmitToNextRoutersinRange(n);
 					if(temp!=0.0){	
-						//transmission initiated
-						//another node to transmit 
+						
 						ArrayList<Router> tempChildren = getChildrenToParentInTree(n);
 						totalCost+=temp;
 						totalTransmits++;
@@ -144,10 +147,15 @@ public String showTotalBraodcastTransmissionPower(){
 						result+="*"+listRouter.getrouterNumber();
 						}
 						result+="*\t\t  "+
+<<<<<<< Updated upstream
 						String.format("%,10.3f", temp)+" Units\n";
+=======
+						String.format("%,10.2f", temp)+" Units\n";
+>>>>>>> Stashed changes
 					}
 					n.setstatus(Router.doneVisited);
 					finished = false;
+					
 				}	
 			}
 		}
@@ -256,7 +264,7 @@ private void initializeAllRoutersinList_toInitialRouterState(){
 		for(int index=0 ; index<totalRouters.size();index++)
 		{
 			totalRouters.get(index).setstatus(Router.notVisited);
-			totalRouters.get(index).set_linkcost(MAX_DISTANCE);
+			totalRouters.get(index).setlinkcost(MAX_DISTANCE);
 			totalRouters.get(index).setprevRouter(null);
 		}
 		

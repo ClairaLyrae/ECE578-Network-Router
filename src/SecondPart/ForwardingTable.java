@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class ForwardingTable {
 	private ArrayList<InfoTable> row;
-	private Integer srcRouterId;
+	private Integer sourceRouterId;
 	
 
 	public ForwardingTable()
 	{
 		row = new ArrayList<InfoTable>();
-		srcRouterId = -1;
+		sourceRouterId = -1;
 		
 	}
 	
@@ -18,13 +18,13 @@ public class ForwardingTable {
 	{
 		
 		row = new ArrayList<InfoTable>();
-		this.srcRouterId = sourceRouter;
+		this.sourceRouterId = sourceRouter;
 		
 	}
 	
 	public void setSourceRouterID(int ID)
 	{
-		srcRouterId = ID;
+		sourceRouterId = ID;
 	}
 	
 	public ArrayList<InfoTable> getTable_LinkedList()
@@ -50,9 +50,9 @@ public class ForwardingTable {
 		
 		if(row.size()==0){
 			
-			return "Forwarding Table for Router ID: "+srcRouterId.toString()+" EMPTY\n";
+			return "Forwarding Table for Router ID: "+sourceRouterId.toString()+" EMPTY\n";
 		}
-		outString = "Forwarding Table for Router ID : "+ srcRouterId.toString()+"\n";
+		outString = "Forwarding Table for Router ID : "+ sourceRouterId.toString()+"\n";
 		
 		
 		outString += "Destination\t    Cost\tNextHop\n";
